@@ -1,8 +1,10 @@
 import Api from "@/libs/api";
-import Image from "next/image";
 import { Resumo } from "../..";
 import { numberFormat } from "@/libs/intl";
 import { Fragment } from "react";
+
+export const dynamic = 'force-static'
+
 
 export default async function Home() {
 
