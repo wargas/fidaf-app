@@ -3,8 +3,7 @@ import { Resumo } from "../..";
 import { numberFormat } from "@/libs/intl";
 import { Fragment } from "react";
 
-export const dynamic = 'force-static'
-
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
 
