@@ -6,3 +6,5 @@ services:
     volumes:
       - "./:/app"
     command: tail -f /dev/null
+    environment:
+      - API_URL=https://api-fidaf.deltex.com.br/
