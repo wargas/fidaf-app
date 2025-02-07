@@ -11,7 +11,7 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
     const { data } = await Api.get<Resumo[]>('resumo')
 
     const receitas = data.map(r => ({ ...r, mesInt: parseInt(r.mes.substring(5)) }))
-        .map(r => ({...r, nominal: parseFloat(r.nominal), corrigido: parseFloat(r.corrigido)}))
+        .map(r => ({ ...r, nominal: parseFloat(r.nominal), corrigido: parseFloat(r.corrigido) }))
         .filter(r => r.mesInt <= mes)
 
     const anterior = receitas?.filter(r => r.mes.startsWith('2024'))
@@ -24,7 +24,7 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
 
     let incremento = correnteCorrigido - anteriorCorrigido
 
-    if(incremento < 0) {
+    if (incremento < 0) {
         incremento = 0
     }
 
@@ -41,6 +41,16 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
             <select className="select select-bordered" defaultValue={mes} name="mes" >
                 <option value="1">Janeiro</option>
                 <option value="2">Fevereiro</option>
+                <option value="3">Março</option>
+                <option value="4">Abril</option>
+                <option value="5">Maio</option>
+                <option value="6">Junho</option>
+                <option value="7">Julho</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setembro</option>
+                <option value="10">Outubro</option>
+                <option value="11">Novembro</option>
+                <option value="12">Dezembro</option>
             </select>
             <button className="btn" type="submit">Enviar</button>
         </form>
@@ -71,7 +81,7 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
                     </tr>
                     <tr>
                         <td>Incremento %</td>
-                        <td className="text-right" colSpan={2}>{(incremento/correnteCorrigido*100).toFixed(2)}%</td>
+                        <td className="text-right" colSpan={2}>{(incremento / correnteCorrigido * 100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <td>Prêmio FIDAF</td>
