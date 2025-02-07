@@ -29,16 +29,18 @@ export default function RootLayout({
       <body data-theme="light"
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="h-screen bg-gray-50 w-full overflow-y-auto">
-
-          <div className="shadow bg-white h-16 flex items-center">
-            <h1 className="px-4 text-xl font-bold">F I D A F</h1>
-            <div className="ml-auto px-4 flex gap-2">
-              <Link href={'/'}>Receitas</Link>
-              <Link href={'/calculo'}>Cálculo</Link>
-            </div>
+        <div className="absolute top-0 right-0 left-0 shadow bg-white h-16 flex items-center z-50">
+          <h1 className="px-4 text-xl font-bold">
+            <Link href='/'>F I D A F</Link>
+          </h1>
+          <div className="ml-auto px-4 flex gap-2">
+            <Link href={'/receitas'}>Receitas</Link>
+            <Link href={'/calculo'}>Cálculo</Link>
           </div>
-          <div className="w-full max-w-screen-2xl mx-auto">
+        </div>
+        <div className="h-screen bg-gray-50 w-full overflow-y-auto pt-16">
+
+         <div className="w-full max-w-screen-2xl mx-auto">
             {children}
           </div>
         </div>

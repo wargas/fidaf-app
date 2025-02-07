@@ -54,7 +54,7 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
                         <th className="text-right">2025</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="text-xs">
                     <tr>
                         <td>Receita nominal</td>
                         <td className="text-right">{format(anteriorNominal)}</td>
