@@ -28,7 +28,19 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
         incremento = 0
     }
 
-    const premioFidaf = incremento * 0.1 * 0.8
+    const incrementPercent = incremento / anteriorCorrigido;
+
+    let percent = 0.1
+
+    if(incrementPercent >= 0.1) {
+        percent = 0.15
+    }
+
+    if(incrementPercent >= 0.06 && incrementPercent < 0.1) {
+        percent = 0.125
+    }
+
+    const premioFidaf = incremento * percent * 0.8
 
     const pontos = 513.9
 
@@ -81,7 +93,11 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
                     </tr>
                     <tr>
                         <td>Incremento %</td>
-                        <td className="text-right" colSpan={2}>{(incremento / correnteCorrigido * 100).toFixed(2)}%</td>
+                        <td className="text-right" colSpan={2}>{(incrementPercent*100).toFixed(2)}%</td>
+                    </tr>
+                    <tr>
+                        <td>Porcentagem aplicada</td>
+                        <td className="text-right" colSpan={2}>{(percent*100).toFixed(2)}%</td>
                     </tr>
                     <tr>
                         <td>Prêmio FIDAF</td>
