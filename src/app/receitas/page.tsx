@@ -9,10 +9,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 export const dynamic = 'force-dynamic'
 
 type Props = {
-  searchParams: {
-    inicio: string,
-    fim: string
-  }
+  searchParams: any
 }
 
 const currencyFormat = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
