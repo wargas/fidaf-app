@@ -1,0 +1,46 @@
+"use client"
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { Button } from './ui/button'
+import { Calendar } from './ui/calendar'
+import { format } from 'date-fns'
+import { useState } from 'react'
+import { CalendarIcon, FilterIcon } from 'lucide-react'
+
+export function FormReceitas({ inicio, fim }: { inicio: string, fim: string }) {
+
+    const [inicioDate, setInicio] = useState<Date | undefined>(new Date(inicio + ' 06:00:01'))
+    const [fimDate, setFim] = useState<Date | undefined>(new Date(fim + ' 06:00:01'))
+
+    return (
+        <form method='GET'>
+            <div className="flex gap-4">
+                <input type="hidden" name="inicio" value={inicioDate && format(inicioDate, "y-MM-dd")} />
+                <input type="hidden" name="fim" value={fimDate && format(fimDate, "y-MM-dd")} />
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button className='min-w-52 flex justify-between' variant={'outline'}>
+                            {format(inicioDate || '', "dd/MM/y")} <CalendarIcon /></Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <Calendar defaultMonth={inicioDate} selected={inicioDate} onSelect={setInicio} mode='single' />
+                    </PopoverContent>
+                </Popover>
+
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button className='min-w-52 flex justify-between' variant={'outline'}>
+                            {format(fimDate || '', "dd/MM/y")}
+                            <CalendarIcon />
+                        </Button>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <Calendar defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
+                    </PopoverContent>
+                </Popover>
+                <Button type='submit'>
+                    Filtrar <FilterIcon />
+                </Button>
+            </div>
+        </form>
+    )
+}

@@ -1,69 +1,167 @@
 import Api from "@/libs/api";
-import { numberFormat } from "@/libs/intl";
-import { Fragment } from "react";
-import { Resumo } from "../../..";
+import { Recolhimento } from "../../..";
+import { FormReceitas } from "@/components/form-receitas";
+import { format, startOfMonth } from "date-fns";
+import { Table, TableBody, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { filter, groupBy, sumBy } from "lodash";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 export const dynamic = 'force-dynamic'
 
-export default async function ReceitasPage() {
+type Props = {
+  searchParams: {
+    inicio: string,
+    fim: string
+  }
+}
 
-  const { data } = await Api.get<Resumo[]>('resumo')
+const currencyFormat = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
 
-  function getValor(mes: string, imposto: string = "") {
-    if(imposto == "") {
-      const valor = data.filter(r => r.mes == mes)
-        .reduce((acc, m) => {
-          return acc + parseFloat(m.corrigido)
-        }, 0)
+export default async function ReceitasPage({ searchParams }: Props) {
 
-        return numberFormat.format(valor)
+  const inicio = searchParams.inicio || format(startOfMonth(new Date()), 'Y-MM-dd')
+  const fim = searchParams.fim || format(new Date(), 'Y-MM-dd')
+
+  const { data } = await Api.get<Recolhimento[]>(`recolhimentos`, {
+    params: {
+      inicio,
+      fim
+    }
+  })
+
+  const dias = Object.keys(groupBy(data, 'data'))
+
+  const result = dias.map(dia => {
+
+    const issNominal = sumBy(filter(data, { data: dia, imposto: 'ISS' }), 'nominal')
+    const issCorrigido = sumBy(filter(data, { data: dia, imposto: 'ISS' }), 'corrigido')
+
+    const iptuNominal = sumBy(filter(data, { data: dia, imposto: 'IPTU' }), 'nominal')
+    const iptuCorrigido = sumBy(filter(data, { data: dia, imposto: 'IPTU' }), 'corrigido')
+
+    const itbiNominal = sumBy(filter(data, { data: dia, imposto: 'ITBI' }), 'nominal')
+    const itbiCorrigido = sumBy(filter(data, { data: dia, imposto: 'ITBI' }), 'corrigido')
+
+    const acrescimosNominal = sumBy(filter(data, { data: dia, imposto: 'JUROS MULTAS' }), 'nominal')
+    const acrescimosCorrigido = sumBy(filter(data, { data: dia, imposto: 'JUROS MULTAS' }), 'corrigido')
+
+    const totalNominal = sumBy(filter(data, { data: dia }), 'nominal')
+    const totalCorrigido = sumBy(filter(data, { data: dia }), 'corrigido')
+
+    return {
+      data: dia,
+      iss: {
+        nominal: issNominal,
+        corrigido: issCorrigido
+      },
+      iptu: {
+        nominal: iptuNominal,
+        corrigido: iptuCorrigido
+      },
+      itbi: {
+        nominal: itbiNominal,
+        corrigido: itbiCorrigido
+      },
+      acrescimos: {
+        nominal: acrescimosNominal,
+        corrigido: acrescimosCorrigido
+      },
+      total: {
+        nominal: totalNominal,
+        corrigido: totalCorrigido
+      }
     }
 
-    return numberFormat.format(parseFloat(data.find(i => i.mes == mes && i.imposto == imposto)?.corrigido || '0'))
+  })
+
+  const totais = {
+    iss: {
+      nominal: sumBy(filter(data, { imposto: 'ISS' }), 'nominal'),
+      corrigido: sumBy(filter(data, { imposto: 'ISS' }), 'corrigido'),
+    },
+    iptu: {
+      nominal: sumBy(filter(data, { imposto: 'IPTU' }), 'nominal'),
+      corrigido: sumBy(filter(data, { imposto: 'IPTU' }), 'corrigido'),
+    },
+    itbi: {
+      nominal: sumBy(filter(data, { imposto: 'ITBI' }), 'nominal'),
+      corrigido: sumBy(filter(data, { imposto: 'ITBI' }), 'corrigido'),
+    },
+    acrescimos: {
+      nominal: sumBy(filter(data, { imposto: 'JUROS MULTAS' }), 'nominal'),
+      corrigido: sumBy(filter(data, { imposto: 'JUROS MULTAS' }), 'corrigido'),
+    },
+    total: {
+      nominal: sumBy(filter(data), 'nominal'),
+      corrigido: sumBy(filter(data), 'corrigido'),
+    }
   }
 
   return (
-    <div className="m-4 py-4 rounded-box bg-white shadow overflow-x-auto">
+    <Card className="mt-4">
+      <CardHeader>
+        <FormReceitas inicio={inicio} fim={fim} />
+      </CardHeader>
+      <CardContent className="p-0">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="border-r border-t" rowSpan={2}>Data</TableHead>
+              <TableHead className="border-t border-r" colSpan={2}>ISS</TableHead>
+              <TableHead className="border-t border-r" colSpan={2}>IPTU</TableHead>
+              <TableHead className="border-t border-r" colSpan={2}>ITBI</TableHead>
+              <TableHead className="border-t border-r" colSpan={2}>Juros/Multas</TableHead>
+              <TableHead className="border-t border-r" colSpan={2}>Total</TableHead>
+            </TableRow>
+            <TableRow>
+              <TableHead className="border-r border-b">Nominal</TableHead>
+              <TableHead className="border-r border-b">Corrigido</TableHead>
+              <TableHead className="border-r border-b">Nominal</TableHead>
+              <TableHead className="border-r border-b">Corrigido</TableHead>
+              <TableHead className="border-r border-b">Nominal</TableHead>
+              <TableHead className="border-r border-b">Corrigido</TableHead>
+              <TableHead className="border-r border-b">Nominal</TableHead>
+              <TableHead className="border-r border-b">Corrigido</TableHead>
+              <TableHead className="border-r border-b">Nominal</TableHead>
+              <TableHead className="border-r border-b">Corrigido</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {result.filter(d => d.total.nominal != 0).map(item => (
+              <TableRow key={item.data}>
+                <TableCell className="border-r">{item.data}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.iss.nominal)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.iss.corrigido)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.iptu.nominal)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.iptu.corrigido)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.itbi.nominal)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.itbi.corrigido)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.acrescimos.nominal)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.acrescimos.corrigido)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.total.nominal)}</TableCell>
+                <TableCell className="border-r">{currencyFormat.format(item.total.corrigido)}</TableCell>
 
-      <table className="table z-0 table-zebra">
-        <thead>
-          <tr>
-            <th rowSpan={2} className="border-r">MES</th>
-            <th colSpan={5} className="border-r text-center">2024</th>
-            <th colSpan={5} className="text-center">2025</th>
-          </tr>
-          <tr>
-            <th>ISS</th>
-            <th>IPTU</th>
-            <th>ITBI</th>
-            <th>Juros/Multas</th>
-            <th className="border-r">Total</th>
-            <th>ISS</th>
-            <th>IPTU</th>
-            <th>ITBI</th>
-            <th>Juros/Multas</th>
-            <th className="border-r">Total</th>
-          </tr>
-        </thead>
-        <tbody className="text-xs" >
-          {Array(12).fill("").map((_, i) => String(i + 1).padStart(2, '0')).map(mes => (
-            <tr key={mes}>
-              <td className="border-r">{mes}</td>
-              {["2024", "2025"].map(ano => (
-                <Fragment key={ano}>
-                  <td>{ getValor(`${ano}-${mes}`, 'ISS') }</td>
-                  <td>{ getValor(`${ano}-${mes}`, 'IPTU') }</td>
-                  <td>{ getValor(`${ano}-${mes}`, 'ITBI') }</td>
-                  <td>{ getValor(`${ano}-${mes}`, 'JUROS MULTAS') }</td>
-                  <td className="border-r">{ getValor(`${ano}-${mes}`, '') }</td>
-                </Fragment>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-        <caption className="caption-bottom text-end">* valores corrigidos pelo IPCA-E</caption>
-      </table>
+              </TableRow>
+            ))}
+          </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableCell className="border-r">TOTAL</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.iss.nominal)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.iss.corrigido)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.iptu.nominal)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.iptu.corrigido)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.itbi.nominal)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.itbi.corrigido)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.acrescimos.nominal)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.acrescimos.corrigido)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.total.nominal)}</TableCell>
+              <TableCell className="font-bold border-r">{currencyFormat.format(totais.total.corrigido)}</TableCell>
 
-    </div>
+            </TableRow>
+          </TableFooter>
+        </Table>
+      </CardContent>
+    </Card>
   );
 }
