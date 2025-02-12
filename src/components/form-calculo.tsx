@@ -5,6 +5,9 @@ import { Calendar } from './ui/calendar'
 import { format } from 'date-fns'
 import { useState } from 'react'
 import { CalendarIcon, FilterIcon } from 'lucide-react'
+import {ptBR} from 'date-fns/locale'
+
+
 
 export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
 
@@ -22,7 +25,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                             {format(inicioDate || '', "dd/MM/y")} <CalendarIcon /></Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                        <Calendar defaultMonth={inicioDate} selected={inicioDate} onSelect={setInicio} mode='single' />
+                        <Calendar locale={ptBR} defaultMonth={inicioDate} selected={inicioDate} onSelect={setInicio} mode='single' />
                     </PopoverContent>
                 </Popover>
 
@@ -34,7 +37,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                        <Calendar defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
+                        <Calendar  defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
                     </PopoverContent>
                 </Popover>
                 <Button type='submit'>
