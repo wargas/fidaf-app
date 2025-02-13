@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+import { CalculatorIcon, ListIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
@@ -34,13 +36,18 @@ export default function RootLayout({
             <Link href='/'>F I D A F</Link>
           </h1>
           <div className="ml-auto px-4 flex gap-2">
-            <Link href={'/receitas'}>Receitas</Link>
-            <Link href={'/calculo'}>Cálculo</Link>
+            <Button variant={'ghost'} asChild>
+              <Link href={'/receitas'}><ListIcon />Receitas</Link>
+            </Button>
+            <Button variant={'ghost'} asChild>
+              <Link href={'/calculo'}><CalculatorIcon /> Cálculo</Link>
+            </Button>
+            
           </div>
         </div>
         <div className="h-screen bg-gray-50 w-full overflow-y-auto pt-16">
 
-         <div className="w-full max-w-screen-2xl mx-auto">
+          <div className="w-full max-w-screen-2xl mx-auto">
             {children}
           </div>
         </div>
