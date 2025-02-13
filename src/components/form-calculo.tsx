@@ -1,11 +1,11 @@
 "use client"
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
+import { format } from 'date-fns'
+import { ptBR } from 'date-fns/locale'
+import { CalendarIcon, FilterIcon } from 'lucide-react'
+import { useState } from 'react'
 import { Button } from './ui/button'
 import { Calendar } from './ui/calendar'
-import { format } from 'date-fns'
-import { useState } from 'react'
-import { CalendarIcon, FilterIcon } from 'lucide-react'
-import {ptBR} from 'date-fns/locale'
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover'
 
 
 
@@ -25,7 +25,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                             {format(inicioDate || '', "dd/MM/y")} <CalendarIcon /></Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                        <Calendar locale={ptBR} defaultMonth={inicioDate} selected={inicioDate} onSelect={setInicio} mode='single' />
+                        <Calendar disabled={date => date.getFullYear() != 2025} locale={ptBR} defaultMonth={inicioDate} selected={inicioDate} onSelect={setInicio} mode='single' />
                     </PopoverContent>
                 </Popover>
 
@@ -37,7 +37,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                        <Calendar  defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
+                        <Calendar disabled={date => date.getFullYear() != 2025}  defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
                     </PopoverContent>
                 </Popover>
                 <Button type='submit'>
