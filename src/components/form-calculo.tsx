@@ -21,7 +21,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                 <input type="hidden" name="fim" value={fimDate && format(fimDate, "y-MM-dd")} />
                 <Popover>
                     <PopoverTrigger asChild>
-                        <Button className='min-w-52 flex justify-between' variant={'outline'}>
+                        <Button className='md:min-w-52 flex justify-between' variant={'outline'}>
                             {format(inicioDate || '', "dd/MM/y")} <CalendarIcon /></Button>
                     </PopoverTrigger>
                     <PopoverContent>
@@ -31,7 +31,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
 
                 <Popover>
                     <PopoverTrigger asChild>
-                        <Button className='min-w-52 flex justify-between' variant={'outline'}>
+                        <Button className='md:min-w-52 flex justify-between' variant={'outline'}>
                             {format(fimDate || '', "dd/MM/y")}
                             <CalendarIcon />
                         </Button>

@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body data-theme="light"
+      <body data-theme="dark"
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="absolute top-0 right-0 left-0 shadow bg-white h-16 flex items-center z-50">
