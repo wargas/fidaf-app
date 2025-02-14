@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { CalculatorIcon, ListIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -52,6 +54,7 @@ export default function RootLayout({
           </div>
         </div>
       </body>
+      <GoogleAnalytics gaId="G-J4JSCFXZZP" />
     </html >
   );
 }
