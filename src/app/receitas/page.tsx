@@ -126,7 +126,7 @@ export default async function ReceitasPage({ searchParams }: Props) {
           <TableBody>
             {result.filter(d => d.total.nominal != 0).map(item => (
               <TableRow key={item.data}>
-                <TableHead className="border-r bg-neutral-50">{format(item.data, 'dd/MM/yyyy')}</TableHead>
+                <TableHead className="border-r bg-neutral-50">{format(item.data + ' 03:00:01', 'dd/MM/yyyy')}</TableHead>
                 <TableCell className="border-r text-right text-xs">{currencyFormat.format(item.iss.nominal)}</TableCell>
                 <TableCell className="border-r text-right text-xs">{currencyFormat.format(item.iss.corrigido)}</TableCell>
                 <TableCell className="border-r text-right text-xs">{currencyFormat.format(item.iptu.nominal)}</TableCell>
