@@ -34,7 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="absolute top-0 right-0 left-0 shadow bg-white h-16 flex items-center z-50">
-          <h1 className="px-4 text-xl font-bold">
+          <h1 className="px-4 text-xl font-bold hidden md:block">
             <Link href='/'>F I D A F</Link>
           </h1>
           <div className="ml-auto px-4 flex gap-2">

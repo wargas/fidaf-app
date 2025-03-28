@@ -16,7 +16,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
 
     return (
         <form method='GET'>
-            <div className="flex gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 w-full max-w-[800px] gap-4">
                 <input type="hidden" name="inicio" value={inicioDate && format(inicioDate, "y-MM-dd")} />
                 <input type="hidden" name="fim" value={fimDate && format(fimDate, "y-MM-dd")} />
                 <Popover>
@@ -40,7 +40,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                         <Calendar disabled={date => date.getFullYear() != 2025}  defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
                     </PopoverContent>
                 </Popover>
-                <Button type='submit'>
+                <Button type='submit' className='col-span-2 md:col-span-1'>
                     Filtrar <FilterIcon />
                 </Button>
             </div>

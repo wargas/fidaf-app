@@ -29,7 +29,7 @@ export function FormReceitas({ inicio: _inicio, fim: _fim }: { inicio: string, f
 
     return (
         <form method='GET'>
-            <div className="flex gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <input type="hidden" name="inicio" value={inicioDate && format(inicioDate, "y-MM-dd")} />
                 <input type="hidden" name="fim" value={fimDate && format(fimDate, "y-MM-dd")} />
                 <Popover>
@@ -53,12 +53,12 @@ export function FormReceitas({ inicio: _inicio, fim: _fim }: { inicio: string, f
                         <Calendar defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
                     </PopoverContent>
                 </Popover>
-                <Button size={'icon'} type='submit'>
-                    <FilterIcon />
+                <Button type='submit'>
+                    <FilterIcon /> Filtrar
                 </Button>
 
                 {inicioDate?.getFullYear() == 2025 && fimDate?.getFullYear() == 2025 && (
-                    <Button variant={'link'} asChild className='ml-auto'>
+                    <Button variant={'outline'} asChild className='ml-auto'>
                         <Link target='_parent' href={`/receitas?inicio=${format(subYears(inicioDate || '', 1), 'yyyy-MM-dd')}&fim=${format(subYears(fimDate || '', 1), 'yyyy-MM-dd')}`}>Comparar</Link>
                     </Button>
                 )}
