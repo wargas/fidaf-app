@@ -39,12 +39,15 @@ export default function RootLayout({
           </h1>
           <div className="ml-auto px-4 flex gap-2">
             <Button variant={'ghost'} asChild>
+              <Link href={'/mensal'}><ListIcon />Mensal</Link>
+            </Button>
+            <Button variant={'ghost'} asChild>
               <Link href={'/receitas'}><ListIcon />Receitas</Link>
             </Button>
             <Button variant={'ghost'} asChild>
               <Link href={'/calculo'}><CalculatorIcon /> Cálculo</Link>
             </Button>
-            
+
           </div>
         </div>
         <div className="h-screen bg-gray-50 w-full overflow-y-auto pt-16">
