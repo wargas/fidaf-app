@@ -1,7 +1,7 @@
 import Api from "@/libs/api";
 import { Recolhimento } from "../../..";
 import { FormReceitas } from "@/components/form-receitas";
-import { format, startOfMonth } from "date-fns";
+import { format, startOfMonth, subDays } from "date-fns";
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { filter, groupBy, sumBy } from "lodash";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -16,8 +16,8 @@ const currencyFormat = Intl.NumberFormat('pt-BR', { style: 'currency', currency:
 
 export default async function ReceitasPage({ searchParams }: Props) {
 
-  const inicio = searchParams.inicio || format(startOfMonth(new Date()), 'Y-MM-dd')
-  const fim = searchParams.fim || format(new Date(), 'Y-MM-dd')
+  const inicio = (await searchParams?.inicio) || format(startOfMonth(new Date()), 'Y-MM-dd')
+  const fim = (await searchParams?.fim) || format(subDays(new Date(), 1), 'Y-MM-dd')
 
   const { data } = await Api.get<Recolhimento[]>(`recolhimentos`, {
     params: {

@@ -1,7 +1,7 @@
 import Api from "@/libs/api"
 import { sumBy } from "lodash"
 import { Calculo, Resumo } from "../../.."
-import { format } from "date-fns"
+import { format, subDays } from "date-fns"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { FormCalculo } from "@/components/form-calculo"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -12,7 +12,7 @@ import { numberFormat, percentFormat } from "@/libs/intl"
 export default async function PageCalculo({ searchParams }: { searchParams: any }) {
 
     const inicio = searchParams.inicio || format(new Date("2025-01-01 03:00:01"), 'y-MM-dd')
-    const fim = searchParams.fim || format(new Date(), 'y-MM-dd')
+    const fim = searchParams.fim || format(subDays(new Date(), 1), 'y-MM-dd')
 
     const { data } = await Api.get<Calculo>(`calculo`, {
         params: {
