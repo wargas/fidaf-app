@@ -9,7 +9,7 @@ import Link from "next/link";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { FilterIcon } from "lucide-react";
-import { endOfMonth, formatDate } from "date-fns";
+import { endOfMonth, formatDate, subDays } from "date-fns";
 
 interface PageMensalProps {
     searchParams: Promise<{
@@ -42,7 +42,8 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
         }))
 
     const limites = {
-        hoje: maxBy(filter(recolhimentos, { ano: 2025 }), 'dia_ano')?.dia_ano!,
+        hoje: formatDate(subDays(new Date(), 1), "MM-dd"),
+        ultimo: maxBy(filter(recolhimentos, { ano: 2025 }), 'dia_ano')?.dia_ano!,
         mes: formatDate(endOfMonth(new Date()), 'MM-dd'),
         ano: '12-31',
     }
@@ -109,6 +110,11 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
+                                <DropdownMenuItem asChild>
+                                    <Link href={`/mensal?data_limite=${limites.ultimo}`}>
+                                        Até último recolhimento
+                                    </Link>
+                                </DropdownMenuItem>
                                 <DropdownMenuItem asChild>
                                     <Link href={`/mensal?data_limite=${limites.hoje}`}>
                                         Até hoje

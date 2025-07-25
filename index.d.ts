@@ -36,3 +36,9 @@ export type Recolhimento = Array<{
     }
   }
   
+
+  export type IPCA = {
+    id: number,
+    mes: string,
+    indice: string
+  }
