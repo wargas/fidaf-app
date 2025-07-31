@@ -181,7 +181,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                     <TableCell className="border text-right text-xs">
                                         {format(d.valores.incremento)}
                                         {d.valores.incremento > 0 && (
-                                            <span>&npsp;{(d.valores.incremento/d.valores.anterior.total*100).toFixed(1).replace('.', ',')}%</span>
+                                            <span>{' '}{(d.valores.incremento/d.valores.anterior.total*100).toFixed(1).replace('.', ',')}%</span>
                                         )}
                                     </TableCell>
                                 </TableRow>
@@ -201,7 +201,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                 <TableHead className="border border-t-2 text-right text-xs">
                                     {format(sumBy(data, 'valores.incremento'))}{' '}
                                     {sumBy(data, 'valores.incremento') > 0 && (
-                                        <span>&nbsp;({(sumBy(data, 'valores.incremento')/sumBy(data, 'valores.anterior.total')*100).toFixed(1).replace('.', ',')}%)</span>
+                                        <span>{' '}({(sumBy(data, 'valores.incremento')/sumBy(data, 'valores.anterior.total')*100).toFixed(1).replace('.', ',')}%)</span>
                                     )}
                                 </TableHead>
                             </TableRow>
