@@ -193,7 +193,12 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                 <TableHead className="border border-t-2 text-right text-xs">{format(sumBy(data, 'valores.corrente.acrescimos'))}</TableHead>
                                 <TableHead className="border border-t-2 text-right text-xs">{format(sumBy(data, 'valores.anterior.total'))}</TableHead>
                                 <TableHead className="border border-t-2 text-right text-xs">{format(sumBy(data, 'valores.corrente.total'))}</TableHead>
-                                <TableHead className="border border-t-2 text-right text-xs">{format(sumBy(data, 'valores.incremento'))}</TableHead>
+                                <TableHead className="border border-t-2 text-right text-xs">
+                                    {format(sumBy(data, 'valores.incremento'))}{' '}
+                                    {sumBy(data, 'valores.incremento') > 0 && (
+                                        <span>&nbsp;({(sumBy(data, 'valores.incremento')/sumBy(data, 'valores.anterior.total')).toFixed(1).replace('.', ',')}%)</span>
+                                    )}
+                                </TableHead>
                             </TableRow>
                         </TableBody>
                     </Table>
