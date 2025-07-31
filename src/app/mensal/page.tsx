@@ -178,7 +178,12 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                     <TableCell className="border text-right text-xs">{format(d.valores.corrente.acrescimos)}</TableCell>
                                     <TableCell className="border text-right text-xs">{format(d.valores.anterior.total)}</TableCell>
                                     <TableCell className="border text-right text-xs">{format(d.valores.corrente.total)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.incremento)}</TableCell>
+                                    <TableCell className="border text-right text-xs">
+                                        {format(d.valores.incremento)}
+                                        {d.valores.incremento > 0 && (
+                                            <span>&npsp;{(d.valores.incremento/d.valores.anterior.total*100).toFixed(1).replace('.', ',')}%</span>
+                                        )}
+                                    </TableCell>
                                 </TableRow>
                             ))}
                             <TableRow>
@@ -196,7 +201,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                 <TableHead className="border border-t-2 text-right text-xs">
                                     {format(sumBy(data, 'valores.incremento'))}{' '}
                                     {sumBy(data, 'valores.incremento') > 0 && (
-                                        <span>&nbsp;({(sumBy(data, 'valores.incremento')/sumBy(data, 'valores.anterior.total')).toFixed(1).replace('.', ',')}%)</span>
+                                        <span>&nbsp;({(sumBy(data, 'valores.incremento')/sumBy(data, 'valores.anterior.total')*100).toFixed(1).replace('.', ',')}%)</span>
                                     )}
                                 </TableHead>
                             </TableRow>
