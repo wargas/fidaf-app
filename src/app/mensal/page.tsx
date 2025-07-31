@@ -181,7 +181,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                     <TableCell className="border text-right text-xs">
                                         {format(d.valores.incremento)}
                                         {d.valores.incremento > 0 && (
-                                            <span>({' '}{(d.valores.incremento/d.valores.anterior.total*100).toFixed(1).replace('.', ',')}%)</span>
+                                            <span>{' '}({(d.valores.incremento/d.valores.anterior.total*100).toFixed(1).replace('.', ',')}%)</span>
                                         )}
                                     </TableCell>
                                 </TableRow>
