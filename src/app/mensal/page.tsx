@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import Api from "@/libs/api";
-import { getMeses } from "@/lib/utils";
+import { cn, getMeses } from "@/lib/utils";
 import { Recolhimento } from "../../..";
 import { filter, maxBy, sumBy } from "lodash";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -17,7 +17,7 @@ interface PageMensalProps {
     }>
 }
 
-const { format } = Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' })
+const { format } = Intl.NumberFormat('pt-BR', { maximumFractionDigits:2, minimumFractionDigits: 2 })
 
 const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) => {
 
@@ -57,6 +57,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
     const data = meses.map(mes => {
         const valores = {
             anterior: {
+                dias: 0,
                 iss: 0,
                 iptu: 0,
                 itbi: 0,
@@ -64,6 +65,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                 total: 0
             },
             corrente: {
+                dias: 0,
                 iss: 0,
                 iptu: 0,
                 itbi: 0,
@@ -72,6 +74,9 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
             },
             incremento: 0
         }
+
+        valores.anterior.dias = filter(recolhimentosFiltreds, { ano: 2024, imposto: 'ISS', mes: mes.codigo }).length
+        valores.corrente.dias = filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ISS', mes: mes.codigo }).length
 
         valores.anterior.iss = sumBy(filter(recolhimentosFiltreds, { ano: 2024, imposto: 'ISS', mes: mes.codigo }), 'corrigido')
         valores.corrente.iss = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ISS', mes: mes.codigo }), 'corrigido')
@@ -167,22 +172,23 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                         <TableBody>
                             {data.map(d => (
                                 <TableRow key={d.codigo}>
-                                    <TableCell className="border text-right text-xs">{d.abrev}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.anterior.iss)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.corrente.iss)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.anterior.iptu)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.corrente.iptu)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.anterior.itbi)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.corrente.itbi)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.anterior.acrescimos)}</TableCell>
-                                    <TableCell className="border text-right text-xs">{format(d.valores.corrente.acrescimos)}</TableCell>
+                                    <TableCell className="border text-right text-xs">{d.abrev.toUpperCase()}
+                                        <span title="Dias Úteis no mês do ano anterior/corrente" className="text-gray-500"> ({d.valores.anterior.dias.toString().padStart(2, '0')}/{d.valores.corrente.dias.toString().padStart(2, '0')})</span>
+                                    </TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.iss-d.valores.anterior.iss)} className="border text-right text-xs">{format(d.valores.anterior.iss)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.iss-d.valores.anterior.iss)} className="border text-right text-xs">{format(d.valores.corrente.iss)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.iptu-d.valores.anterior.iptu)} className="border text-right text-xs">{format(d.valores.anterior.iptu)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.iptu-d.valores.anterior.iptu)} className="border text-right text-xs">{format(d.valores.corrente.iptu)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.itbi-d.valores.anterior.itbi)} className="border text-right text-xs">{format(d.valores.anterior.itbi)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.itbi-d.valores.anterior.itbi)} className="border text-right text-xs">{format(d.valores.corrente.itbi)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.acrescimos-d.valores.anterior.acrescimos)} className="border text-right text-xs">{format(d.valores.anterior.acrescimos)}</TableCell>
+                                    <TableCell title={"Diferença: "+format(d.valores.corrente.acrescimos-d.valores.anterior.acrescimos)} className="border text-right text-xs">{format(d.valores.corrente.acrescimos)}</TableCell>
                                     <TableCell className="border text-right text-xs">{format(d.valores.anterior.total)}</TableCell>
                                     <TableCell className="border text-right text-xs">{format(d.valores.corrente.total)}</TableCell>
-                                    <TableCell className="border text-right text-xs">
+                                    <TableCell className={cn("border text-right text-xs font-bold", {'text-red-600 ': d.valores.incremento < 0})}>
                                         {format(d.valores.incremento)}
-                                        {d.valores.incremento > 0 && (
-                                            <span>{' '}({(d.valores.incremento/d.valores.anterior.total*100).toFixed(1).replace('.', ',')}%)</span>
-                                        )}
+                                        <span>{' '}({(d.valores.incremento / d.valores.anterior.total * 100).toFixed(1).replace('.', ',')}%)</span>
+                                       
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -200,9 +206,8 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                 <TableHead className="border border-t-2 text-right text-xs">{format(sumBy(data, 'valores.corrente.total'))}</TableHead>
                                 <TableHead className="border border-t-2 text-right text-xs">
                                     {format(sumBy(data, 'valores.incremento'))}{' '}
-                                    {sumBy(data, 'valores.incremento') > 0 && (
-                                        <span>{' '}({(sumBy(data, 'valores.incremento')/sumBy(data, 'valores.anterior.total')*100).toFixed(1).replace('.', ',')}%)</span>
-                                    )}
+                                    <span>{' '}({(sumBy(data, 'valores.incremento') / sumBy(data, 'valores.anterior.total') * 100).toFixed(1).replace('.', ',')}%)</span>
+                                    
                                 </TableHead>
                             </TableRow>
                         </TableBody>
