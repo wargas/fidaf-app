@@ -41,6 +41,10 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
                             <TableHead>Incremento ({percentFormat.format(data.incremento.porcentagem)})</TableHead>
                             <TableCell className="text-end font-bold">{numberFormat.format(data.incremento.valor)}</TableCell>
                         </TableRow>
+                         <TableRow>
+                            <TableHead>REFIS</TableHead>
+                            <TableCell className="text-end font-bold">{numberFormat.format(data.refis)}</TableCell>
+                        </TableRow>
                         <TableRow>
                             <TableHead>Prêmio ({percentFormat.format(data.premio.porcentagem)})</TableHead>
                             <TableCell className="text-end font-bold">{numberFormat.format(data.premio.valor)}</TableCell>
