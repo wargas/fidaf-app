@@ -34,6 +34,7 @@ export type Recolhimento = Array<{
       auditor: number
       analista: number
     }
+    refis:number
   }
   
 
