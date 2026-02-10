@@ -26,8 +26,8 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
 
     const request = await Api.get<Recolhimento>(`recolhimentos`, {
         params: {
-            inicio: '2024-01-01',
-            fim: '2025-12-31'
+            inicio: '2025-01-01',
+            fim: '2026-12-31'
         }
     })
 
@@ -43,7 +43,7 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
 
     const limites = {
         hoje: formatDate(subDays(new Date(), 1), "MM-dd"),
-        ultimo: maxBy(filter(recolhimentos, { ano: 2025 }), 'dia_ano')?.dia_ano!,
+        ultimo: maxBy(filter(recolhimentos, { ano: 2026 }), 'dia_ano')?.dia_ano!,
         mes: formatDate(endOfMonth(new Date()), 'MM-dd'),
         ano: '12-31',
     }
@@ -75,23 +75,23 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
             incremento: 0
         }
 
-        valores.anterior.dias = filter(recolhimentosFiltreds, { ano: 2024, imposto: 'ISS', mes: mes.codigo }).length
-        valores.corrente.dias = filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ISS', mes: mes.codigo }).length
+        valores.anterior.dias = filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ISS', mes: mes.codigo }).length
+        valores.corrente.dias = filter(recolhimentosFiltreds, { ano: 2026, imposto: 'ISS', mes: mes.codigo }).length
 
-        valores.anterior.iss = sumBy(filter(recolhimentosFiltreds, { ano: 2024, imposto: 'ISS', mes: mes.codigo }), 'corrigido')
-        valores.corrente.iss = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ISS', mes: mes.codigo }), 'corrigido')
+        valores.anterior.iss = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ISS', mes: mes.codigo }), 'corrigido')
+        valores.corrente.iss = sumBy(filter(recolhimentosFiltreds, { ano: 2026, imposto: 'ISS', mes: mes.codigo }), 'corrigido')
 
-        valores.anterior.iptu = sumBy(filter(recolhimentosFiltreds, { ano: 2024, imposto: 'IPTU', mes: mes.codigo }), 'corrigido')
-        valores.corrente.iptu = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'IPTU', mes: mes.codigo }), 'corrigido')
+        valores.anterior.iptu = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'IPTU', mes: mes.codigo }), 'corrigido')
+        valores.corrente.iptu = sumBy(filter(recolhimentosFiltreds, { ano: 2026, imposto: 'IPTU', mes: mes.codigo }), 'corrigido')
 
-        valores.anterior.itbi = sumBy(filter(recolhimentosFiltreds, { ano: 2024, imposto: 'ITBI', mes: mes.codigo }), 'corrigido')
-        valores.corrente.itbi = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ITBI', mes: mes.codigo }), 'corrigido')
+        valores.anterior.itbi = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'ITBI', mes: mes.codigo }), 'corrigido')
+        valores.corrente.itbi = sumBy(filter(recolhimentosFiltreds, { ano: 2026, imposto: 'ITBI', mes: mes.codigo }), 'corrigido')
 
-        valores.anterior.acrescimos = sumBy(filter(recolhimentosFiltreds, { ano: 2024, imposto: 'JUROS MULTAS', mes: mes.codigo }), 'corrigido')
-        valores.corrente.acrescimos = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'JUROS MULTAS', mes: mes.codigo }), 'corrigido')
+        valores.anterior.acrescimos = sumBy(filter(recolhimentosFiltreds, { ano: 2025, imposto: 'JUROS MULTAS', mes: mes.codigo }), 'corrigido')
+        valores.corrente.acrescimos = sumBy(filter(recolhimentosFiltreds, { ano: 2026, imposto: 'JUROS MULTAS', mes: mes.codigo }), 'corrigido')
 
-        valores.anterior.total = sumBy(filter(recolhimentosFiltreds, { ano: 2024, mes: mes.codigo }), 'corrigido')
-        valores.corrente.total = sumBy(filter(recolhimentosFiltreds, { ano: 2025, mes: mes.codigo }), 'corrigido')
+        valores.anterior.total = sumBy(filter(recolhimentosFiltreds, { ano: 2025, mes: mes.codigo }), 'corrigido')
+        valores.corrente.total = sumBy(filter(recolhimentosFiltreds, { ano: 2026, mes: mes.codigo }), 'corrigido')
 
         valores.incremento = valores.corrente.total - valores.anterior.total
 
@@ -157,16 +157,16 @@ const PageMensal: FunctionComponent<PageMensalProps> = async ({ searchParams }) 
                                 <TableHead rowSpan={2} className="text-center text-xs border">Incremento</TableHead>
                             </TableRow>
                             <TableRow>
-                                <TableHead className="border text-center text-xs">2024</TableHead>
                                 <TableHead className="border text-center text-xs">2025</TableHead>
-                                <TableHead className="border text-center text-xs">2024</TableHead>
+                                <TableHead className="border text-center text-xs">2026</TableHead>
                                 <TableHead className="border text-center text-xs">2025</TableHead>
-                                <TableHead className="border text-center text-xs">2024</TableHead>
+                                <TableHead className="border text-center text-xs">2026</TableHead>
                                 <TableHead className="border text-center text-xs">2025</TableHead>
-                                <TableHead className="border text-center text-xs">2024</TableHead>
+                                <TableHead className="border text-center text-xs">2026</TableHead>
                                 <TableHead className="border text-center text-xs">2025</TableHead>
-                                <TableHead className="border text-center text-xs">2024</TableHead>
+                                <TableHead className="border text-center text-xs">2026</TableHead>
                                 <TableHead className="border text-center text-xs">2025</TableHead>
+                                <TableHead className="border text-center text-xs">2026</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
