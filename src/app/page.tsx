@@ -19,10 +19,10 @@ export default function Home() {
   // const data = Array.from({ length: 12 }).map((_, i) => ({ mes: i + 1, iss: Math.random() * 1000, iptu: 500 }))
 
   const config = {
-    2024: {
+    2025: {
       color: 'var(--chart-1)'
     },
-    2025: {
+    2026: {
       color: 'var(--chart-2)'
     }
   } satisfies ChartConfig
@@ -30,8 +30,8 @@ export default function Home() {
   async function updateData() {
     const request = await Api.get<Recolhimento>(`recolhimentos`, {
       params: {
-        inicio: '2024-01-01',
-        fim: '2025-12-31'
+        inicio: '2025-01-01',
+        fim: '2026-12-31'
       }
     })
 
@@ -49,16 +49,16 @@ export default function Home() {
           .map(itemsOfMonth => {
             return {
               mes: itemsOfMonth[0].mes,
-              iss_corrente: sumBy(filter(itemsOfMonth, { "imposto": "ISS", ano: "2025" }), "corrigido"),
-              iptu_corrente: sumBy(filter(itemsOfMonth, { "imposto": "IPTU", ano: "2025" }), "corrigido"),
-              itbi_corrente: sumBy(filter(itemsOfMonth, { "imposto": "ITBI", ano: "2025" }), "corrigido"),
-              acrescimos_corrente: sumBy(filter(itemsOfMonth, { "imposto": "JUROS MULTAS", ano: "2025" }), "corrigido"),
-              total_corrente: sumBy(filter(itemsOfMonth, { ano: "2025" }), "corrigido"),
-              iss_anterior: sumBy(filter(itemsOfMonth, { "imposto": "ISS", ano: "2024" }), "corrigido"),
-              iptu_anterior: sumBy(filter(itemsOfMonth, { "imposto": "IPTU", ano: "2024" }), "corrigido"),
-              itbi_anterior: sumBy(filter(itemsOfMonth, { "imposto": "ITBI", ano: "2024" }), "corrigido"),
-              acrescimos_anterior: sumBy(filter(itemsOfMonth, { "imposto": "JUROS MULTAS", ano: "2024" }), "corrigido"),
-              total_anterior: sumBy(filter(itemsOfMonth, { ano: "2024" }), "corrigido"),
+              iss_corrente: sumBy(filter(itemsOfMonth, { "imposto": "ISS", ano: "2026" }), "corrigido"),
+              iptu_corrente: sumBy(filter(itemsOfMonth, { "imposto": "IPTU", ano: "2026" }), "corrigido"),
+              itbi_corrente: sumBy(filter(itemsOfMonth, { "imposto": "ITBI", ano: "2026" }), "corrigido"),
+              acrescimos_corrente: sumBy(filter(itemsOfMonth, { "imposto": "JUROS MULTAS", ano: "2026" }), "corrigido"),
+              total_corrente: sumBy(filter(itemsOfMonth, { ano: "2026" }), "corrigido"),
+              iss_anterior: sumBy(filter(itemsOfMonth, { "imposto": "ISS", ano: "2025" }), "corrigido"),
+              iptu_anterior: sumBy(filter(itemsOfMonth, { "imposto": "IPTU", ano: "2025" }), "corrigido"),
+              itbi_anterior: sumBy(filter(itemsOfMonth, { "imposto": "ITBI", ano: "2025" }), "corrigido"),
+              acrescimos_anterior: sumBy(filter(itemsOfMonth, { "imposto": "JUROS MULTAS", ano: "2025" }), "corrigido"),
+              total_anterior: sumBy(filter(itemsOfMonth, { ano: "2025" }), "corrigido"),
 
             }
           }), "mes"
@@ -71,8 +71,8 @@ export default function Home() {
       return {
         mes: item.mes,
         mesString: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"][parseInt(item.mes) - 1],
-        2025: get(item, `${key}_corrente`, 0),
-        2024: get(item, `${key}_anterior`, 0),
+        2026: get(item, `${key}_corrente`, 0),
+        2025: get(item, `${key}_anterior`, 0),
       }
     })
   }, [data, key])
@@ -110,8 +110,8 @@ export default function Home() {
         <CardContent className="p-0">
           <ChartContainer config={config} className="max-h-80 w-full" >
             <BarChart barGap={2} data={selectedData}>
-              <Bar dataKey={`2024`} fill="var(--color-2024)" radius={4} />
               <Bar dataKey={`2025`} fill="var(--color-2025)" radius={4} />
+              <Bar dataKey={`2026`} fill="var(--color-2026)" radius={4} />
               <XAxis dataKey={"mesString"} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={t => Number(t / 1000 / 1000).toFixed(1) + "M"} type="number" axisLine={false} tickLine={false} />
               <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
