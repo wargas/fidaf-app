@@ -11,8 +11,8 @@ import { numberFormat, percentFormat } from "@/libs/intl"
 
 export default async function PageCalculo({ searchParams }: { searchParams: any }) {
 
-    const inicio = searchParams.inicio || format(new Date("2025-01-01 03:00:01"), 'y-MM-dd')
-    const fim = searchParams.fim || format(new Date("2025-12-31"), 'y-MM-dd')
+    const inicio = searchParams.inicio || format(new Date("2026-01-01 03:00:01"), 'y-MM-dd')
+    const fim = searchParams.fim || format(new Date("2026-12-31"), 'y-MM-dd')
 
     const { data } = await Api.get<Calculo>(`calculo`, {
         params: {
@@ -30,11 +30,11 @@ export default async function PageCalculo({ searchParams }: { searchParams: any 
                 <Table className="w-full max-w-screen-md">
                     <TableBody>
                         <TableRow>
-                            <TableHead>Receita 2025</TableHead>
+                            <TableHead>Receita 2026</TableHead>
                             <TableCell className="text-end font-bold">{numberFormat.format(data.curr.corrigida)}</TableCell>
                         </TableRow>
                         <TableRow>
-                            <TableHead>Receita 2024</TableHead>
+                            <TableHead>Receita 2025</TableHead>
                             <TableCell className="text-end font-bold">{numberFormat.format(data.prev.corrigida)}</TableCell>
                         </TableRow>
                         <TableRow>
