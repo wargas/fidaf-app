@@ -37,7 +37,7 @@ export function FormCalculo({ inicio, fim }: { inicio: string, fim: string }) {
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent>
-                        <Calendar disabled={date => date.getFullYear() != 2025}  defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
+                        <Calendar disabled={date => date.getFullYear() != 2026}  defaultMonth={fimDate} selected={fimDate} onSelect={setFim} mode='single' />
                     </PopoverContent>
                 </Popover>
                 <Button type='submit' className='col-span-2 md:col-span-1'>
