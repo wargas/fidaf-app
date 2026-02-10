@@ -12,7 +12,7 @@ import { numberFormat, percentFormat } from "@/libs/intl"
 export default async function PageCalculo({ searchParams }: { searchParams: any }) {
 
     const inicio = searchParams.inicio || format(new Date("2026-01-01 03:00:01"), 'y-MM-dd')
-    const fim = searchParams.fim || format(new Date("2026-12-31"), 'y-MM-dd')
+    const fim = searchParams.fim || format(new Date(), 'y-MM-dd')
 
     const { data } = await Api.get<Calculo>(`calculo`, {
         params: {
